@@ -3,20 +3,24 @@
 @tailwind utilities;
 
 :root {
-  --bg: #ffffff;
+  --bg: #fafafa;
   --text: #111111;
-  --border: #d4d4d4;
-  --card-bg: #fafafa;
-  --hover-bg: #f0f0f0;
+  --text-secondary: #666666;
+  --border: #e5e5e5;
+  --card: #ffffff;
+  --hover: #f0f0f0;
+  --sidebar-width: 80px;
+  --right-width: 240px;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #0a0a0a;
     --text: #ededed;
-    --border: #2e2e2e;
-    --card-bg: #141414;
-    --hover-bg: #1f1f1f;
+    --text-secondary: #888888;
+    --border: #2a2a2a;
+    --card: #141414;
+    --hover: #1f1f1f;
   }
 }
 
@@ -29,12 +33,17 @@
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
 
-/* 极简滚动条 */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* 滚动条 */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -47,70 +56,81 @@ body {
   border-radius: 3px;
 }
 
-/* 链接基础样式 */
-a {
-  color: inherit;
-  text-decoration: none;
+/* 基础组件 */
+.sidebar-icon {
+  @apply w-12 h-12 flex items-center justify-center rounded-xl text-[var(--text-secondary)] hover:bg-[var(--hover)] hover:text-[var(--text)] transition-all duration-200 cursor-pointer;
 }
-
-/* 自定义类 */
-.sidebar {
-  border-right: 1px solid var(--border);
+.sidebar-icon.active {
+  @apply bg-[var(--text)] text-[var(--bg)];
 }
 
 .card {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  transition: all 0.2s ease;
+  @apply bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 transition-all duration-200;
 }
-
 .card:hover {
-  background: var(--hover-bg);
-  transform: translateY(-2px);
+  @apply bg-[var(--hover)] -translate-y-0.5;
 }
 
-/* 输入框 */
-input {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  color: var(--text);
-  padding: 10px 16px;
-  border-radius: 40px;
-  font-size: 14px;
-  outline: none;
-  transition: border 0.2s;
+/* 粒子 */
+.particle {
+  position: fixed;
+  pointer-events: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text-secondary);
+  opacity: 0.6;
+  animation: floatParticle 1.2s ease-out forwards;
+  z-index: 9999;
 }
 
-input:focus {
-  border-color: #888;
+@keyframes floatParticle {
+  0% { opacity: 0.8; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-80px) scale(0.3); }
 }
 
-/* 按钮 */
-.btn {
-  background: var(--text);
-  color: var(--bg);
-  border: none;
-  padding: 8px 20px;
-  border-radius: 40px;
-  font-weight: 500;
-  font-size: 14px;
-  cursor: pointer;
-  transition: opacity 0.2s;
-}
-
-.btn:hover {
-  opacity: 0.8;
-}
-
-/* 火箭动画简化 */
+/* 火箭 */
 .rocket {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  font-size: 32px;
-  opacity: 0.5;
-  transition: opacity 0.3s;
+  bottom: 24px;
+  right: 24px;
+  font-size: 40px;
+  opacity: 0.3;
   pointer-events: none;
   z-index: 50;
+  filter: grayscale(1);
+}
+
+/* 自定义右键菜单 */
+.context-menu {
+  position: fixed;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 6px 0;
+  min-width: 160px;
+  z-index: 9998;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+}
+.context-menu-item {
+  @apply px-4 py-2 text-sm hover:bg-[var(--hover)] cursor-pointer transition-colors;
+}
+
+/* 加载屏 */
+.loading-screen {
+  @apply fixed inset-0 z-[9999] bg-[var(--bg)] flex items-center justify-center;
+}
+
+/* 打字机光标 */
+.typing-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.2em;
+  background: var(--text);
+  margin-left: 4px;
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
