@@ -50,6 +50,13 @@ const NAV_DATA = {
   },
 };
 
+// 技术栈配置
+const TECH_STACK = [
+  { category: '前端', items: ['React', 'Next.js', 'Tailwind', 'TypeScript'] },
+  { category: '后端', items: ['Node.js', 'Python', 'MongoDB', 'Vercel'] },
+  { category: '工具', items: ['Figma', 'VSCode', 'Git', 'Notion'] },
+];
+
 const SIGNATURES = [
   '探索我的数字花园',
   '代码与文字的交汇',
@@ -58,7 +65,7 @@ const SIGNATURES = [
 ];
 
 export default function Home() {
-  const [activeCategory, setActiveCategory] = useState('blog'); // blog, personal, minecraft, tools, resources
+  const [activeCategory, setActiveCategory] = useState('blog');
   const [secretInput, setSecretInput] = useState('');
   const [rocket, setRocket] = useState(false);
   const [wpPosts, setWpPosts] = useState([]);
@@ -67,7 +74,7 @@ export default function Home() {
   const [signatureIndex, setSignatureIndex] = useState(0);
   const [typingText, setTypingText] = useState('');
   const [isTyping, setIsTyping] = useState(true);
-  const [theme, setTheme] = useState('auto'); // auto, light, dark
+  const [theme, setTheme] = useState('auto');
   const [loading, setLoading] = useState(true);
   const [konami, setKonami] = useState('');
   const [showSecretBtn, setShowSecretBtn] = useState(false);
@@ -80,9 +87,7 @@ export default function Home() {
   const [terminalOutput, setTerminalOutput] = useState([]);
 
   const mainRef = useRef(null);
-  const logoRef = useRef(null);
-  const rocketTimer = useRef(null);
-  const particleContainer = useRef(null);
+  const logoClickCount = useRef(0);
 
   // 时间更新
   useEffect(() => {
@@ -90,7 +95,7 @@ export default function Home() {
     return () => clearInterval(timer);
   }, []);
 
-  // 打字机效果 (彩蛋#7)
+  // 打字机签名
   useEffect(() => {
     const fullText = SIGNATURES[signatureIndex];
     let i = 0;
@@ -108,7 +113,6 @@ export default function Home() {
     return () => clearInterval(timer);
   }, [signatureIndex]);
 
-  // 轮播签名 (彩蛋#7 循环)
   useEffect(() => {
     const timer = setInterval(() => {
       setSignatureIndex(prev => (prev + 1) % SIGNATURES.length);
@@ -116,13 +120,13 @@ export default function Home() {
     return () => clearInterval(timer);
   }, []);
 
-  // 加载动画 (彩蛋#9)
+  // 加载动画
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1200);
     return () => clearTimeout(timer);
   }, []);
 
-  // 滚动火箭 (彩蛋#5)
+  // 滚动火箭
   useEffect(() => {
     const handleScroll = () => {
       const nearBottom = window.scrollY + window.innerHeight > document.body.scrollHeight - 100;
@@ -149,7 +153,7 @@ export default function Home() {
     fetchPosts();
   }, []);
 
-  // 粒子 (彩蛋#1, #2)
+  // 粒子
   const addParticle = useCallback((x, y, isClick = false) => {
     if (typeof document === 'undefined') return;
     const p = document.createElement('div');
@@ -184,7 +188,7 @@ export default function Home() {
     return () => window.removeEventListener('click', click);
   }, [addParticle]);
 
-  // Konami (彩蛋#3)
+  // Konami
   useEffect(() => {
     const keydown = (e) => {
       setKonami(prev => (prev + e.key).slice(-10));
@@ -199,7 +203,7 @@ export default function Home() {
     }
   }, [konami]);
 
-  // 右键菜单 (彩蛋#14)
+  // 右键菜单
   useEffect(() => {
     const handler = (e) => {
       e.preventDefault();
@@ -214,14 +218,12 @@ export default function Home() {
     };
   }, []);
 
-  // 键盘导航 G键游戏模式 (彩蛋#15)
+  // 键盘导航
   useEffect(() => {
     const keydown = (e) => {
       if (e.key === 'g' || e.key === 'G') {
         setGameMode(prev => !prev);
-        if (!gameMode) {
-          setTerminalOutput(['🎮 游戏模式启动！', '使用 J/K 导航，Enter 打开']);
-        }
+        if (!gameMode) setTerminalOutput(['🎮 游戏模式启动！', '使用 J/K 导航，Enter 打开']);
       }
       if (gameMode) {
         const categories = ['blog', 'personal', 'minecraft', 'tools', 'resources'];
@@ -235,22 +237,26 @@ export default function Home() {
           setGameMode(false);
         }
       }
-      // T键终端 (彩蛋#17)
       if (e.key === 't' || e.key === 'T') {
         setTerminalOpen(prev => !prev);
+      }
+      if (e.key === 's' || e.key === 'S') {
+        if (activeCategory === 'blog' && wpPosts.length) {
+          setWpPosts([...wpPosts].sort((a, b) => a.title.rendered.localeCompare(b.title.rendered)));
+        }
       }
     };
     window.addEventListener('keydown', keydown);
     return () => window.removeEventListener('keydown', keydown);
-  }, [gameMode, selectedNavIndex]);
+  }, [gameMode, selectedNavIndex, activeCategory, wpPosts]);
 
-  // 秘密按钮悬停 (彩蛋#8)
+  // 秘密按钮
   const handleSecretAreaHover = () => {
     setHoverCount(c => c + 1);
     if (hoverCount + 1 >= 5) setShowSecretBtn(true);
   };
 
-  // 双击返回顶部 (彩蛋#13)
+  // 双击返回顶部
   useEffect(() => {
     const dblclick = () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -261,7 +267,7 @@ export default function Home() {
     return () => window.removeEventListener('dblclick', dblclick);
   }, []);
 
-  // 打印彩蛋 (彩蛋#20)
+  // 打印彩蛋
   useEffect(() => {
     const beforePrint = () => {
       const style = document.createElement('style');
@@ -272,15 +278,21 @@ export default function Home() {
     return () => window.removeEventListener('beforeprint', beforePrint);
   }, []);
 
-  // 格式化时间
-  const formatTime = (date) => {
-    return date.toLocaleTimeString('zh-CN', { hour12: false, hour: '2-digit', minute: '2-digit' });
-  };
-  const formatDate = (date) => {
-    return date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' });
+  // Logo 点击彩蛋
+  const handleLogoClick = () => {
+    logoClickCount.current += 1;
+    if (logoClickCount.current >= 5) {
+      alert('🥚 彩蛋弹窗：欢迎来到 liseezn 主页');
+      logoClickCount.current = 0;
+    }
+    setActiveCategory('blog');
   };
 
-  // 文章卡片渲染
+  // 时间格式化
+  const formatTime = (date) => date.toLocaleTimeString('zh-CN', { hour12: false, hour: '2-digit', minute: '2-digit' });
+  const formatDate = (date) => date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' });
+
+  // 博客视图（含技术栈）
   const renderBlogView = () => (
     <div className="space-y-8">
       <div className="card">
@@ -290,6 +302,316 @@ export default function Home() {
             <h3 className="text-xl font-medium mb-1">liseezn 的数字花园</h3>
             <p className="text-[var(--text-secondary)] text-sm leading-relaxed">
               探索我的数字花园 · 不定期记录技术、生活与 Minecraft 服务器动态。
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* 技术栈模块 */}
+      <div className="py-2">
+        <div className="flex flex-wrap gap-8 justify-center">
+          {TECH_STACK.map((group) => (
+            <div key={group.category} className="text-center">
+              <div className="text-xs uppercase tracking-wider text-[var(--text-secondary)] mb-3">{group.category}</div>
+              <div className="flex flex-wrap gap-3 justify-center">
+                {group.items.map((tech) => (
+                  <span
+                    key={tech}
+                    className="text-sm text-[var(--text-secondary)] hover:text-[var(--text)] hover:underline underline-offset-4 transition-colors cursor-default"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <h2 className="text-2xl font-light tracking-wide">最新文章</h2>
+      {wpLoading ? (
+        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {[1,2,3].map(i => (
+            <div key={i} className="card animate-pulse">
+              <div className="h-4 bg-[var(--border)] rounded w-3/4 mb-3" />
+              <div className="h-3 bg-[var(--border)] rounded w-full mb-2" />
+              <div className="h-3 bg-[var(--border)] rounded w-2/3" />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {wpPosts.map((post) => (
+            <a key={post.id} href={post.link} target="_blank" className="card group" rel="noopener noreferrer">
+              <div className="flex justify-between items-start mb-2">
+                <h3 className="font-medium text-lg group-hover:underline decoration-1 underline-offset-4">
+                  {post.title.rendered}
+                </h3>
+                <span className="text-xs text-[var(--text-secondary)] whitespace-nowrap ml-2">
+                  {new Date(post.date).toLocaleDateString('zh-CN', { month:'numeric', day:'numeric' })}
+                </span>
+              </div>
+              <div
+                className="text-sm text-[var(--text-secondary)] line-clamp-2 mb-3"
+                dangerouslySetInnerHTML={{
+                  __html: post.excerpt.rendered.replace(/<[^>]+>/g, '').slice(0, 100) + '...'
+                }}
+              />
+              <div className="flex items-center text-xs text-[var(--text-secondary)]">
+                <span>阅读全文</span>
+                <ChevronRight size={14} className="ml-1 group-hover:translate-x-0.5 transition-transform" />
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+
+  const renderCategoryView = (catKey) => {
+    const data = NAV_DATA[catKey];
+    if (!data) return null;
+    return (
+      <div className="space-y-6">
+        <div>
+          <h2 className="text-2xl font-light tracking-wide">{data.title}</h2>
+          <p className="text-[var(--text-secondary)] text-sm mt-1">{data.desc}</p>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {data.items.map((item, idx) => {
+            const Icon = item.icon;
+            return (
+              <a key={idx} href={item.url} target="_blank" className="card flex items-start gap-4" rel="noopener noreferrer">
+                <div className="p-2 rounded-xl bg-[var(--hover)]">
+                  <Icon size={22} />
+                </div>
+                <div>
+                  <div className="font-medium">{item.name}</div>
+                  <div className="text-xs text-[var(--text-secondary)] mt-0.5">{item.desc}</div>
+                  <div className="text-xs text-[var(--text-secondary)] truncate mt-1">{item.url.replace('https://', '')}</div>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
+
+  const RightPanel = () => (
+    <div className="w-[240px] pl-6 border-l border-[var(--border)] hidden lg:block">
+      <div className="sticky top-8 space-y-8">
+        <div>
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-xs uppercase tracking-wider text-[var(--text-secondary)]">本地时间</span>
+            <button onClick={() => setTheme(t => t === 'dark' ? 'light' : 'dark')} className="p-1 rounded hover:bg-[var(--hover)]">
+              {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+            </button>
+          </div>
+          <div className="text-4xl font-light tracking-tight">{formatTime(currentTime)}</div>
+          <div className="text-xs text-[var(--text-secondary)] mt-1">{formatDate(currentTime)}</div>
+        </div>
+        <div>
+          <div className="text-xs uppercase tracking-wider text-[var(--text-secondary)] mb-2">今日签名</div>
+          <div className="text-sm leading-relaxed min-h-[3rem]">
+            {typingText}
+            {isTyping && <span className="typing-cursor" />}
+          </div>
+        </div>
+        <div>
+          <div className="text-xs uppercase tracking-wider text-[var(--text-secondary)] mb-2">彩蛋入口</div>
+          <input
+            type="text"
+            placeholder="输入 secret"
+            value={secretInput}
+            onChange={(e) => setSecretInput(e.target.value)}
+            className="w-full px-4 py-2 rounded-full border border-[var(--border)] bg-[var(--card)] text-sm focus:outline-none focus:ring-1 focus:ring-[var(--text-secondary)] transition"
+          />
+          {secretInput === 'secret' && (
+            <motion.p initial={{ opacity:0 }} animate={{ opacity:1 }} className="text-xs text-[var(--text-secondary)] mt-2">
+              ✨ 彩蛋已解锁
+            </motion.p>
+          )}
+          <div className="mt-4 h-2 w-full" onMouseEnter={handleSecretAreaHover} />
+          {showSecretBtn && (
+            <motion.button
+              initial={{ scale:0 }} animate={{ scale:1 }}
+              className="mt-2 text-xs underline"
+              onClick={() => alert('🥚 终极彩蛋！')}
+            >
+              超级彩蛋
+            </motion.button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+
+  const TerminalPanel = () => (
+    <AnimatePresence>
+      {terminalOpen && (
+        <motion.div initial={{ y: 100 }} animate={{ y:0 }} exit={{ y:100 }}
+          className="fixed bottom-0 left-0 right-0 lg:left-20 lg:right-60 bg-[var(--card)] border-t border-[var(--border)] p-4 z-40 font-mono text-sm"
+        >
+          <div className="max-w-4xl mx-auto">
+            <div className="flex items-center gap-2 mb-2">
+              <Terminal size={16} />
+              <span>liseezn@home:~$</span>
+            </div>
+            <div className="space-y-1 max-h-32 overflow-y-auto">
+              {terminalOutput.map((line, i) => (
+                <div key={i} className="text-[var(--text-secondary)]">{line}</div>
+              ))}
+            </div>
+            <div className="flex items-center mt-2">
+              <span className="mr-2">$</span>
+              <input
+                type="text"
+                value={terminalCmd}
+                onChange={(e) => setTerminalCmd(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    if (terminalCmd === 'help') {
+                      setTerminalOutput([...terminalOutput, '> help', '可用命令: help, clear, about, easteregg']);
+                    } else if (terminalCmd === 'clear') {
+                      setTerminalOutput([]);
+                    } else if (terminalCmd === 'about') {
+                      setTerminalOutput([...terminalOutput, '> about', 'liseezn 个人主页 v2.0 · 内置 20 个彩蛋']);
+                    } else if (terminalCmd === 'easteregg') {
+                      setTerminalOutput([...terminalOutput, '> easteregg', '🥚 恭喜你发现了隐藏终端彩蛋！']);
+                      addParticle(window.innerWidth/2, window.innerHeight/2);
+                    } else {
+                      setTerminalOutput([...terminalOutput, `> ${terminalCmd}`, '命令未找到，输入 help 查看可用命令']);
+                    }
+                    setTerminalCmd('');
+                  }
+                }}
+                className="flex-1 bg-transparent border-none outline-none"
+                autoFocus
+              />
+              <button onClick={() => setTerminalOpen(false)} className="ml-4 text-xs underline">关闭</button>
+            </div>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+
+  if (loading) {
+    return (
+      <div className="loading-screen">
+        <motion.div initial={{ opacity:0, scale:0.9 }} animate={{ opacity:1, scale:1 }} exit={{ opacity:0 }}>
+          <span className="text-3xl font-light">liseezn</span>
+        </motion.div>
+      </div>
+    );
+  }
+
+  return (
+    <main className="min-h-screen flex bg-[var(--bg)] text-[var(--text)]">
+      {/* 左侧边栏 */}
+      <aside className="sidebar w-20 flex flex-col items-center py-6 border-r border-[var(--border)] sticky top-0 h-screen">
+        <div className="mb-8 cursor-pointer" onClick={handleLogoClick}>
+          <div className="w-10 h-10 rounded-xl bg-[var(--text)] text-[var(--bg)] flex items-center justify-center font-medium text-sm">L</div>
+        </div>
+        <nav className="flex-1 flex flex-col gap-2">
+          {[
+            { key: 'blog', icon: Terminal, label: '博客' },
+            { key: 'personal', icon: User, label: '个人' },
+            { key: 'minecraft', icon: Pickaxe, label: 'MC' },
+            { key: 'tools', icon: Wrench, label: '工具' },
+            { key: 'resources', icon: Package, label: '资源' },
+          ].map((item, idx) => {
+            const Icon = item.icon;
+            const isActive = activeCategory === item.key;
+            const isGameSelected = gameMode && selectedNavIndex === idx;
+            return (
+              <button
+                key={item.key}
+                onClick={() => setActiveCategory(item.key)}
+                className={`sidebar-icon ${isActive ? 'active' : ''} ${isGameSelected ? 'ring-1 ring-[var(--text)]' : ''}`}
+                title={item.label}
+              >
+                <Icon size={22} />
+              </button>
+            );
+          })}
+        </nav>
+        <div className="flex flex-col gap-3">
+          <a href="https://github.com/liseezn" target="_blank" className="text-[var(--text-secondary)] hover:text-[var(--text)] transition" rel="noopener noreferrer"><Github size={20} /></a>
+          <a href="https://space.bilibili.com/586867478" target="_blank" className="text-[var(--text-secondary)] hover:text-[var(--text)] transition" rel="noopener noreferrer"><Video size={20} /></a>
+          <a href="mailto:hi@liseezn.top" className="text-[var(--text-secondary)] hover:text-[var(--text)] transition"><Mail size={20} /></a>
+        </div>
+      </aside>
+
+      {/* 中间主区 */}
+      <div className="flex-1 px-6 md:px-10 py-8 overflow-y-auto" ref={mainRef}>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeCategory}
+            initial={{ opacity:0, y:10 }}
+            animate={{ opacity:1, y:0 }}
+            exit={{ opacity:0, y:-10 }}
+            transition={{ duration:0.2 }}
+          >
+            {activeCategory === 'blog' && renderBlogView()}
+            {activeCategory === 'personal' && renderCategoryView('personal')}
+            {activeCategory === 'minecraft' && renderCategoryView('minecraft')}
+            {activeCategory === 'tools' && renderCategoryView('tools')}
+            {activeCategory === 'resources' && renderCategoryView('resources')}
+          </motion.div>
+        </AnimatePresence>
+        <footer className="mt-16 pt-8 border-t border-[var(--border)] text-center text-xs text-[var(--text-secondary)]">
+          <p>© 2024–2026 liseezn.top · 萌ICP备20258868号 · 萌ICP备20266626号</p>
+          <p className="mt-1 opacity-50">Built with curiosity · 内置 20 个交互彩蛋</p>
+        </footer>
+      </div>
+
+      <RightPanel />
+
+      {contextMenu.show && (
+        <div className="context-menu" style={{ left: contextMenu.x, top: contextMenu.y }}>
+          <div className="context-menu-item" onClick={() => { setTheme(t => t==='dark'?'light':'dark'); setContextMenu({show:false}); }}>
+            切换主题
+          </div>
+          <div className="context-menu-item" onClick={() => { setTerminalOpen(true); setContextMenu({show:false}); }}>
+            打开终端
+          </div>
+          <div className="context-menu-item" onClick={() => { navigator.clipboard?.writeText(formatTime(currentTime)); setContextMenu({show:false}); }}>
+            复制当前时间
+          </div>
+        </div>
+      )}
+
+      <AnimatePresence>
+        {rocket && (
+          <motion.div
+            initial={{ x: 100, opacity:0 }}
+            animate={{ x:0, opacity:0.3 }}
+            exit={{ x:-100, opacity:0 }}
+            transition={{ type:'spring', damping:15 }}
+            className="rocket"
+          >
+            🚀
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <TerminalPanel />
+
+      <AnimatePresence>
+        {gameMode && (
+          <motion.div initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
+            className="fixed bottom-4 left-24 bg-[var(--card)] border border-[var(--border)] px-4 py-2 rounded-full text-xs flex items-center gap-2 z-50"
+          >
+            <span>🎮 游戏模式 · J/K 导航</span>
+            <button onClick={() => setGameMode(false)} className="ml-2 underline">退出</button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </main>
+  );
+}活与 Minecraft 服务器动态。
             </p>
           </div>
         </div>
