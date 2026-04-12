@@ -13,13 +13,13 @@ export default function Home() {
   const [hoverCount, setHoverCount] = useState(0);
   const [typing] = useState('你发现了一个小彩蛋~');
 
-  const bgmRef = useRef<HTMLAudioElement>(null);
+  const bgmRef = useRef(null);
   const [isMusicPlay, setIsMusicPlay] = useState(false);
-  const contextRef = useRef<HTMLDivElement>(null);
+  const contextRef = useRef(null);
   const [contextPos, setContextPos] = useState({ x: 0, y: 0 });
 
   // 粒子效果
-  const addParticle = (x: number, y: number) => {
+  const addParticle = (x, y) => {
     if (typeof document === 'undefined') return;
     const emojis = ['✨', '💖', '🌟', '🔥', '🚀', '😎'];
     const p = document.createElement('div');
@@ -32,7 +32,7 @@ export default function Home() {
   };
 
   // 碎屏特效
-  const createBurst = (x: number, y: number) => {
+  const createBurst = (x, y) => {
     for (let i = 0; i < 20; i++) {
       addParticle(x + (Math.random() - 0.5) * 100, y + (Math.random() - 0.5) * 100);
     }
@@ -40,7 +40,7 @@ export default function Home() {
 
   // 鼠标移动随机粒子
   useEffect(() => {
-    const move = (e: MouseEvent) => {
+    const move = (e) => {
       if (Math.random() > 0.92) addParticle(e.clientX, e.clientY);
     };
     window.addEventListener('mousemove', move);
@@ -49,8 +49,8 @@ export default function Home() {
 
   // 点击空白处粒子
   useEffect(() => {
-    const click = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
+    const click = (e) => {
+      const target = e.target;
       if (!target.closest('a') && !target.closest('button') && !target.closest('input')) {
         addParticle(e.clientX, e.clientY);
       }
@@ -61,7 +61,7 @@ export default function Home() {
 
   // Konami 彩蛋
   useEffect(() => {
-    const keyDown = (e: KeyboardEvent) => {
+    const keyDown = (e) => {
       setKonami(prev => (prev + e.key).slice(-10));
     };
     window.addEventListener('keydown', keyDown);
@@ -107,7 +107,7 @@ export default function Home() {
 
   // 自定义右键菜单
   useEffect(() => {
-    const handleContext = (e: MouseEvent) => {
+    const handleContext = (e) => {
       e.preventDefault();
       setContextPos({ x: e.clientX, y: e.clientY });
       if (contextRef.current) {
