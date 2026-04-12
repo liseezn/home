@@ -21,7 +21,7 @@ const NAV_DATA = {
     title: 'Minecraft 服务器',
     desc: '我的世界相关服务',
     items: [
-      { name: '官网', url: 'https://mc.liseezn.top', icon: Pickaxe, desc: '服务器主页' },
+      { name: '官网', url: 'https://mc.liseezn.top', icon: Hammer, desc: '服务器主页' },
       { name: '论坛', url: 'https://bbs.mc.liseezn.top', icon: HelpCircle, desc: '玩家社区' },
       { name: '地图', url: 'https://map.mc.liseezn.top', icon: ChevronRight, desc: '在线地图' },
       { name: '面板', url: 'https://panel.mc.liseezn.top', icon: Terminal, desc: '管理面板' },
@@ -44,7 +44,7 @@ const NAV_DATA = {
     desc: '学习与娱乐资料',
     items: [
       { name: '英语', url: 'https://seeen.liseezn.top', icon: ChevronRight, desc: '英语学习资源' },
-      { name: '游戏', url: 'https://game.liseezn.top', icon: Pickaxe, desc: '游戏下载与模组' },
+      { name: '游戏', url: 'https://game.liseezn.top', icon: Hammer, desc: '游戏下载与模组' },
     ],
   },
 };
