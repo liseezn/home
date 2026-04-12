@@ -1,6 +1,8 @@
 'use client';
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import {
+  User, Hammer, Wrench, Package, Github, Video, Mail,
+  Sun, Moon, ChevronRight, Clock, Terminal, HelpCircle
+} from 'lucide-react';
 import {
   User, Pickaxe, Wrench, Package, Github, Video, Mail,
   Sun, Moon, ChevronRight, Clock, Terminal, HelpCircle
