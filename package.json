@@ -1,4 +1,13 @@
 {
+  "name": "liseezn-homepage",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
   "dependencies": {
     "framer-motion": "^10.16.4",
     "lucide-react": "^0.294.0",
