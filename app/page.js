@@ -182,7 +182,7 @@ export default function Home() {
 
   return (
     <main className={`min-h-screen w-full ${dark ? 'dark bg-slate-900 text-white' : 'bg-gray-50 text-dark'}`}>
-      {/* 音频彩蛋 */}
+      {/* 音频彩蛋 - 已修复闭合标签 */}
       <audio ref={bgmRef} loop>
         <source src="https://cdn.freesound.org/previews/640/640251_1299461-lq.mp3" type="audio/mpeg" />
       
