@@ -52,9 +52,32 @@ const NAV_DATA = {
 
 // 技术栈配置
 const TECH_STACK = [
-  { category: '前端', items: ['React', 'Next.js', 'Tailwind', 'TypeScript'] },
-  { category: '后端', items: ['Node.js', 'Python', 'MongoDB', 'Vercel'] },
-  { category: '工具', items: ['Figma', 'VSCode', 'Git', 'Notion'] },
+  const TECH_STACK = [
+  {
+    category: '前端',
+    items: [
+      'React', 'Next.js (App Router)', 'TypeScript', 'Tailwind CSS',
+      'HTML5', 'CSS3', 'JavaScript ES6+', 'Vite', 'Axios',
+      'WordPress 主题开发', 'Typecho 主题开发', 'APlayer 播放器定制'
+    ]
+  },
+  {
+    category: '后端',
+    items: [
+      'PHP 8.2', 'Node.js', 'Python', 'MySQL', 'MongoDB', 'Redis',
+      'Nginx 反向代理', 'Apache', '.htaccess 规则',
+      'Docker 容器化', 'Docker Compose', 'Vercel', 'Zeabur',
+      'WordPress 插件开发', 'Typecho 插件开发', 'RESTful API 设计'
+    ]
+  },
+  {
+    category: '工具',
+    items: [
+      'VSCode', 'Git', 'GitHub', 'Figma', 'Notion', 'Postman',
+      'Chrome DevTools', 'Xmind', 'pnpm', 'Composer',
+      'J-Link', 'CH340G', 'Arduino IDE'
+    ]
+  }
 ];
 
 const SIGNATURES = [
@@ -563,7 +586,7 @@ export default function Home() {
         <div className="flex flex-col gap-3">
           <a href="https://github.com/liseezn" target="_blank" className="text-[var(--text-secondary)] hover:text-[var(--text)] transition" rel="noopener noreferrer"><Github size={20} /></a>
           <a href="https://space.bilibili.com/586867478" target="_blank" className="text-[var(--text-secondary)] hover:text-[var(--text)] transition" rel="noopener noreferrer"><Video size={20} /></a>
-          <a href="mailto:hi@liseezn.top" className="text-[var(--text-secondary)] hover:text-[var(--text)] transition"><Mail size={20} /></a>
+          <a href="mailto:mail@liseezn.top" className="text-[var(--text-secondary)] hover:text-[var(--text)] transition"><Mail size={20} /></a>
         </div>
       </aside>
 
