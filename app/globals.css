@@ -3,12 +3,21 @@
 @tailwind utilities;
 
 :root {
-  --bg-gradient: radial-gradient(circle at 20% 30%, #1a1a2e, #16213e);
-  --glass-bg: rgba(255, 255, 255, 0.05);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --neon-primary: #00f2fe;
-  --neon-secondary: #4facfe;
-  --neon-accent: #f093fb;
+  --bg: #ffffff;
+  --text: #111111;
+  --border: #d4d4d4;
+  --card-bg: #fafafa;
+  --hover-bg: #f0f0f0;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0a0a0a;
+    --text: #ededed;
+    --border: #2e2e2e;
+    --card-bg: #141414;
+    --hover-bg: #1f1f1f;
+  }
 }
 
 * {
@@ -18,177 +27,90 @@
 }
 
 body {
-  background: var(--bg-gradient);
-  color: #ffffff;
-  min-height: 100vh;
-  font-family: 'Press Start 2P', 'Courier New', monospace;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
-.pixel-font {
-  font-family: 'Press Start 2P', 'Courier New', monospace;
-  letter-spacing: 0.5px;
+/* 极简滚动条 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
 }
 
-.pixel-border {
-  border: 2px solid #2a1f4c;
-  box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 0.3);
+/* 链接基础样式 */
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
-.pixel-corners {
-  clip-path: polygon(0% 4px, 4px 0%, calc(100% - 4px) 0%, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 0% calc(100% - 4px));
+/* 自定义类 */
+.sidebar {
+  border-right: 1px solid var(--border);
 }
 
-.pixel-text-shadow {
-  text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.3);
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  transition: all 0.2s ease;
 }
 
-.glow-spot {
-  position: fixed;
-  width: 600px;
-  height: 600px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(0,242,254,0.15) 0%, rgba(79,172,254,0.05) 70%, transparent 100%);
-  pointer-events: none;
-  z-index: 0;
-  transform: translate(-50%, -50%);
-  transition: opacity 0.2s;
+.card:hover {
+  background: var(--hover-bg);
+  transform: translateY(-2px);
 }
 
-.glass-card {
-  background: rgba(20, 10, 40, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 8px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
-}
-
-.glass-card:hover {
-  background: rgba(40, 20, 80, 0.8);
-  border-color: rgba(0, 242, 254, 0.3);
-  box-shadow: 0 12px 40px rgba(0, 242, 254, 0.15), 0 0 20px rgba(0, 242, 254, 0.1);
-  transform: translateY(-4px);
-}
-
-.neon-text {
-  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 50%, #f093fb 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow: 0 0 20px rgba(0, 242, 254, 0.5);
-}
-
-.nav-card {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 1rem;
-  border-radius: 8px;
-  background: rgba(20, 10, 40, 0.6);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  transition: all 0.25s ease;
-}
-
-.nav-card:hover {
-  background: rgba(0, 242, 254, 0.08);
-  border-color: rgba(0, 242, 254, 0.5);
-  transform: translateY(-3px);
-  box-shadow: 0 10px 25px -5px rgba(0, 242, 254, 0.2);
-}
-
-.particle {
-  position: fixed;
-  pointer-events: none;
-  font-size: 24px;
-  filter: drop-shadow(0 0 8px currentColor);
-  animation: floatUp 1.5s ease-out forwards;
-  z-index: 9999;
-}
-
-@keyframes floatUp {
-  0% { opacity: 1; transform: translateY(0) scale(1); }
-  100% { opacity: 0; transform: translateY(-120px) scale(0.5); }
-}
-
-.custom-context-menu {
-  position: fixed;
-  background: rgba(20, 10, 40, 0.95);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-radius: 8px;
-  border: 2px solid rgba(0, 242, 254, 0.3);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 242, 254, 0.1);
-  min-width: 180px;
-  z-index: 9999;
-  padding: 8px 0;
-  color: white;
-}
-
-.custom-context-menu div {
-  padding: 10px 20px;
-  transition: all 0.15s;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.custom-context-menu div:hover {
-  background: rgba(0, 242, 254, 0.15);
-  color: #00f2fe;
-}
-
-.sleep-tip {
-  position: fixed;
-  top: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  color: #fff;
-  padding: 10px 24px;
-  border-radius: 0;
-  z-index: 9999;
-  border: 2px solid rgba(255, 100, 100, 0.6);
-  box-shadow: 4px 4px 0px rgba(0,0,0,0.3);
-  font-weight: 500;
-  letter-spacing: 0.5px;
-}
-
+/* 输入框 */
 input {
-  background: rgba(20, 10, 40, 0.6);
-  border: 2px solid rgba(255, 255, 255, 0.15);
-  color: white;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-radius: 8px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 10px 16px;
+  border-radius: 40px;
+  font-size: 14px;
+  outline: none;
+  transition: border 0.2s;
 }
 
 input:focus {
-  outline: none;
-  border-color: #00f2fe;
-  box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
+  border-color: #888;
 }
 
-.btn-primary {
-  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+/* 按钮 */
+.btn {
+  background: var(--text);
+  color: var(--bg);
   border: none;
-  color: white;
-  font-weight: 600;
-  padding: 12px 28px;
-  border-radius: 8px;
-  box-shadow: 4px 4px 0px rgba(0, 242, 254, 0.3);
-  transition: all 0.2s;
+  padding: 8px 20px;
+  border-radius: 40px;
+  font-weight: 500;
+  font-size: 14px;
   cursor: pointer;
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  transition: opacity 0.2s;
 }
 
-.btn-primary:hover {
-  transform: scale(1.03);
-  box-shadow: 6px 6px 0px rgba(0, 242, 254, 0.5);
+.btn:hover {
+  opacity: 0.8;
 }
 
-.loading-screen {
-  background: #0b0b1a;
-  color: #00f2fe;
+/* 火箭动画简化 */
+.rocket {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  font-size: 32px;
+  opacity: 0.5;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  z-index: 50;
 }
