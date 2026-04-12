@@ -1,3 +1,5 @@
+
+```markdown
 <div align="center">
   <img src="https://via.placeholder.com/120x120/000000/FFFFFF?text=L" alt="liseezn logo" width="80" />
   <h1>liseezn · 数字花园</h1>
@@ -76,68 +78,50 @@
 ```bash
 git clone https://github.com/liseezn/home.git
 cd home
- 
- 
-2. 安装依赖
- 
-bash
-  
+```
 
+### 2. 安装依赖
+```bash
 npm install
- 
- 
-3. 启动开发环境
- 
-bash
-  
+```
 
+### 3. 启动开发环境
+```bash
 npm run dev
- 
- 
+```
 访问 http://localhost:3000
- 
-4. 构建生产版本
- 
-bash
-  
 
+### 4. 构建生产版本
+```bash
 npm run build
 npm start
- 
- 
- 
- 
-⚙️ 自定义配置
- 
-修改导航链接
- 
-在  app/page.js  中修改  NAV_DATA  中的名称、链接、描述。
- 
-修改技术栈展示
- 
-编辑  TECH_STACK  数组，增删前端/后端/其他分类。
- 
-修改博客源（WordPress）
- 
-javascript
-  
+```
 
+---
+
+## ⚙️ 自定义配置
+
+### 修改导航链接
+在 `app/page.js` 中修改 `NAV_DATA` 中的名称、链接、描述。
+
+### 修改技术栈展示
+编辑 `TECH_STACK` 数组，增删前端/后端/其他分类。
+
+### 修改博客源（WordPress）
+```javascript
 const res = await fetch('https://你的博客/wp-json/wp/v2/posts?per_page=6&_embed')
- 
- 
-调整彩蛋参数
- 
-- 秘密区域触发次数： hoverCount >= 5 
-- 粒子出现概率： Math.random() > 0.95 
-- 深夜模式时间： 0 ≤ h < 6 
- 
- 
- 
-📂 项目结构
- 
-plaintext
-  
+```
 
+### 调整彩蛋参数
+- 秘密区域触发次数：`hoverCount >= 5`
+- 粒子出现概率：`Math.random() > 0.95`
+- 深夜模式时间：`0 ≤ h < 6`
+
+---
+
+## 📂 项目结构
+
+```
 liseezn-homepage/
 ├── app/
 │   ├── globals.css
@@ -149,41 +133,40 @@ liseezn-homepage/
 ├── postcss.config.js
 ├── next.config.js
 └── package.json
- 
- 
- 
- 
-🌐 部署
- 
+```
+
+---
+
+## 🌐 部署
+
 项目已适配 Vercel，一键部署：
- 
-1. 推送到 GitHub
-2. Vercel 新建项目 → 导入仓库
-3. 框架选择 Next.js
-4. 直接 Deploy
- 
- 
- 
-🤝 贡献
- 
+
+1. 推送到 GitHub
+2. Vercel 新建项目 → 导入仓库
+3. 框架选择 Next.js
+4. 直接 Deploy
+
+---
+
+## 🤝 贡献
+
 欢迎提交 Issue、PR，或分享你发现的新彩蛋创意。
- 
- 
- 
-📄 许可证
- 
+
+---
+
+## 📄 许可证
+
 MIT License
- 
- 
- 
-💬 作者
- 
+
+---
+
+## 💬 作者
+
 - GitHub：@liseezn
 - 博客：blog.liseezn.top
-- 邮箱：mail@liseezn.top
-✨ 如果对你有帮助，欢迎 Star ✨ 
-```如果你想，我还能帮你：
- 
-- 换成更酷的暗黑系 README
-- 加上项目徽章、状态标签、访问统计
-- 或者按你真实截图帮你把预览图写好
+- 邮箱: mail@liseezn.top
+
+<br />
+<div align="center">
+✨ 如果对你有帮助，欢迎 Star ✨
+</div>
