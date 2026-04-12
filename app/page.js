@@ -1,10 +1,11 @@
 'use client';
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   User, Hammer, Wrench, Package, Github, Video, Mail,
   Sun, Moon, ChevronRight, Clock, Terminal, HelpCircle
 } from 'lucide-react';
+
 // 导航数据
 const NAV_DATA = {
   personal: {
@@ -142,9 +143,10 @@ export default function Home() {
         const res = await fetch('https://blog.liseezn.top/wp-json/wp/v2/posts?per_page=6&_embed');
         if (!res.ok) throw new Error();
         const data = await res.json();
-        setWpPosts(data);
+        setWpPosts(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error('博客加载失败');
+        setWpPosts([]);
       } finally {
         setWpLoading(false);
       }
@@ -241,7 +243,7 @@ export default function Home() {
       }
       if (e.key === 's' || e.key === 'S') {
         if (activeCategory === 'blog' && wpPosts.length) {
-          setWpPosts([...wpPosts].sort((a, b) => a.title.rendered.localeCompare(b.title.rendered)));
+          setWpPosts([...wpPosts].sort((a, b) => (a.title?.rendered || '').localeCompare(b.title?.rendered || '')));
         }
       }
     };
@@ -290,6 +292,24 @@ export default function Home() {
   // 时间格式化
   const formatTime = (date) => date.toLocaleTimeString('zh-CN', { hour12: false, hour: '2-digit', minute: '2-digit' });
   const formatDate = (date) => date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' });
+
+  // 安全的剪贴板写入
+  const safeCopy = (text) => {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+    } else {
+      fallbackCopy(text);
+    }
+  };
+  const fallbackCopy = (text) => {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    alert('时间已复制：' + text);
+  };
 
   // 博客视图（含技术栈）
   const renderBlogView = () => (
@@ -340,28 +360,32 @@ export default function Home() {
         </div>
       ) : (
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {wpPosts.map((post) => (
-            <a key={post.id} href={post.link} target="_blank" className="card group" rel="noopener noreferrer">
-              <div className="flex justify-between items-start mb-2">
-                <h3 className="font-medium text-lg group-hover:underline decoration-1 underline-offset-4">
-                  {post.title.rendered}
-                </h3>
-                <span className="text-xs text-[var(--text-secondary)] whitespace-nowrap ml-2">
-                  {new Date(post.date).toLocaleDateString('zh-CN', { month:'numeric', day:'numeric' })}
-                </span>
-              </div>
-              <div
-                className="text-sm text-[var(--text-secondary)] line-clamp-2 mb-3"
-                dangerouslySetInnerHTML={{
-                  __html: post.excerpt.rendered.replace(/<[^>]+>/g, '').slice(0, 100) + '...'
-                }}
-              />
-              <div className="flex items-center text-xs text-[var(--text-secondary)]">
-                <span>阅读全文</span>
-                <ChevronRight size={14} className="ml-1 group-hover:translate-x-0.5 transition-transform" />
-              </div>
-            </a>
-          ))}
+          {wpPosts.map((post) => {
+            const title = post?.title?.rendered || '无标题';
+            const excerpt = post?.excerpt?.rendered || '';
+            const date = post?.date ? new Date(post.date).toLocaleDateString('zh-CN', { month:'numeric', day:'numeric' }) : '';
+            const link = post?.link || '#';
+            return (
+              <a key={post.id} href={link} target="_blank" className="card group" rel="noopener noreferrer">
+                <div className="flex justify-between items-start mb-2">
+                  <h3 className="font-medium text-lg group-hover:underline decoration-1 underline-offset-4">
+                    {title}
+                  </h3>
+                  <span className="text-xs text-[var(--text-secondary)] whitespace-nowrap ml-2">{date}</span>
+                </div>
+                <div
+                  className="text-sm text-[var(--text-secondary)] line-clamp-2 mb-3"
+                  dangerouslySetInnerHTML={{
+                    __html: excerpt.replace(/<[^>]+>/g, '').slice(0, 100) + '...'
+                  }}
+                />
+                <div className="flex items-center text-xs text-[var(--text-secondary)]">
+                  <span>阅读全文</span>
+                  <ChevronRight size={14} className="ml-1 group-hover:translate-x-0.5 transition-transform" />
+                </div>
+              </a>
+            );
+          })}
         </div>
       )}
     </div>
@@ -397,7 +421,7 @@ export default function Home() {
     );
   };
 
-const RightPanel = () => (
+  const RightPanel = () => (
     <div className="w-[240px] pl-6 border-l border-[var(--border)] hidden lg:block">
       <div className="sticky top-8 space-y-8">
         <div>
@@ -444,9 +468,9 @@ const RightPanel = () => (
         </div>
       </div>
     </div>
-);
+  );
 
-const TerminalPanel = () => (
+  const TerminalPanel = () => (
     <AnimatePresence>
       {terminalOpen && (
         <motion.div initial={{ y: 100 }} animate={{ y:0 }} exit={{ y:100 }}
@@ -494,8 +518,7 @@ const TerminalPanel = () => (
         </motion.div>
       )}
     </AnimatePresence>
-);
-
+  );
 
   if (loading) {
     return (
@@ -518,7 +541,7 @@ const TerminalPanel = () => (
           {[
             { key: 'blog', icon: Terminal, label: '博客' },
             { key: 'personal', icon: User, label: '个人' },
-            { key: 'minecraft', icon: Pickaxe, label: 'MC' },
+            { key: 'minecraft', icon: Hammer, label: 'MC' },
             { key: 'tools', icon: Wrench, label: '工具' },
             { key: 'resources', icon: Package, label: '资源' },
           ].map((item, idx) => {
@@ -577,7 +600,7 @@ const TerminalPanel = () => (
           <div className="context-menu-item" onClick={() => { setTerminalOpen(true); setContextMenu({show:false}); }}>
             打开终端
           </div>
-          <div className="context-menu-item" onClick={() => { navigator.clipboard?.writeText(formatTime(currentTime)); setContextMenu({show:false}); }}>
+          <div className="context-menu-item" onClick={() => { safeCopy(formatTime(currentTime)); setContextMenu({show:false}); }}>
             复制当前时间
           </div>
         </div>
