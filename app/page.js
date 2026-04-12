@@ -52,7 +52,6 @@ const NAV_DATA = {
 
 // 技术栈配置
 const TECH_STACK = [
-  const TECH_STACK = [
   {
     category: '前端',
     items: [
