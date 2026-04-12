@@ -5,7 +5,7 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair' });
 
 export const metadata = {
-  title: 'liseezn · 数字花园',
+  title: 'liseezn · 主页',
   description: '极简黑白灰个人主页，藏有二十个交互彩蛋',
 };
 
