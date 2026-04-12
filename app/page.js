@@ -55,18 +55,18 @@ const TECH_STACK = [
   {
     category: '前端',
     items: [
-      'React', 'Next.js (App Router)', 'TypeScript', 'Tailwind CSS',
+      'React', 'Next.js', 'TypeScript', 'Tailwind CSS',
       'HTML5', 'CSS3', 'JavaScript ES6+', 'Vite', 'Axios',
-      'WordPress 主题开发', 'Typecho 主题开发', 'APlayer 播放器定制'
+      'WordPress', 'Typecho', 'APlayer'
     ]
   },
   {
     category: '后端',
     items: [
-      'PHP 8.2', 'Node.js', 'Python', 'MySQL', 'MongoDB', 'Redis',
-      'Nginx 反向代理', 'Apache', '.htaccess 规则',
-      'Docker 容器化', 'Docker Compose', 'Vercel', 'Zeabur',
-      'WordPress 插件开发', 'Typecho 插件开发', 'RESTful API 设计'
+      'PHP', 'Node.js', 'Python', 'MySQL', 'MongoDB', 'Redis',
+      'Nginx', 'Apache', 
+      'Docker', 'Docker Compose', 'Vercel', 'Zeabur',
+      'WordPress', 'Typecho', 'RESTful API'
     ]
   },
   {
@@ -74,13 +74,13 @@ const TECH_STACK = [
     items: [
       'VSCode', 'Git', 'GitHub', 'Figma', 'Notion', 'Postman',
       'Chrome DevTools', 'Xmind', 'pnpm', 'Composer',
-      'J-Link', 'CH340G', 'Arduino IDE'
+      'J-Link', 'Arduino IDE'
     ]
   }
 ];
 
 const SIGNATURES = [
-  '探索我的数字花园',
+  '探索我的数字主页',
   '代码与文字的交汇',
   '保持好奇，保持简单',
   '试试输入 secret',
