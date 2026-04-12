@@ -11,22 +11,16 @@ export default function Home() {
   const [secretInput, setSecretInput] = useState('');
   const [showSecretBtn, setShowSecretBtn] = useState(false);
   const [hoverCount, setHoverCount] = useState(0);
+  const [typing] = useState('你发现了一个小彩蛋~');
 
-  const bgmRef = useRef(null);
+  const bgmRef = useRef<HTMLAudioElement>(null);
   const [isMusicPlay, setIsMusicPlay] = useState(false);
-  const contextRef = useRef(null);
+  const contextRef = useRef<HTMLDivElement>(null);
   const [contextPos, setContextPos] = useState({ x: 0, y: 0 });
 
-  const typingTexts = [
-    '你发现了一个小彩蛋~',
-    '鼠标到处点点有惊喜',
-    '试试输入 Konami 代码',
-    '滚动到底部看看火箭'
-  ];
-  const [typing, setTyping] = useState(typingTexts[0]);
-
-  // 粒子
-  const addParticle = (x, y) => {
+  // 粒子效果
+  const addParticle = (x: number, y: number) => {
+    if (typeof document === 'undefined') return;
     const emojis = ['✨', '💖', '🌟', '🔥', '🚀', '😎'];
     const p = document.createElement('div');
     p.className = 'particle';
@@ -37,26 +31,27 @@ export default function Home() {
     setTimeout(() => p.remove(), 1500);
   };
 
-  // 碎屏
-  const createBurst = (x, y) => {
+  // 碎屏特效
+  const createBurst = (x: number, y: number) => {
     for (let i = 0; i < 20; i++) {
       addParticle(x + (Math.random() - 0.5) * 100, y + (Math.random() - 0.5) * 100);
     }
   };
 
-  // 鼠标移动
+  // 鼠标移动随机粒子
   useEffect(() => {
-    const move = (e) => {
+    const move = (e: MouseEvent) => {
       if (Math.random() > 0.92) addParticle(e.clientX, e.clientY);
     };
     window.addEventListener('mousemove', move);
     return () => window.removeEventListener('mousemove', move);
   }, []);
 
-  // 点击空白
+  // 点击空白处粒子
   useEffect(() => {
-    const click = (e) => {
-      if (!e.target.closest('a') && !e.target.closest('button') && !e.target.closest('input')) {
+    const click = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest('a') && !target.closest('button') && !target.closest('input')) {
         addParticle(e.clientX, e.clientY);
       }
     };
@@ -64,20 +59,22 @@ export default function Home() {
     return () => window.removeEventListener('click', click);
   }, []);
 
-  // Konami
+  // Konami 彩蛋
   useEffect(() => {
-    const keyDown = (e) => {
+    const keyDown = (e: KeyboardEvent) => {
       setKonami(prev => (prev + e.key).slice(-10));
     };
     window.addEventListener('keydown', keyDown);
+    return () => window.removeEventListener('keydown', keyDown);
+  }, []);
+  useEffect(() => {
     if (konami === 'ArrowUpArrowUpArrowDownArrowDownArrowLeftArrowRightArrowLeftArrowRightba') {
       alert('🎉 Konami 彩蛋触发！');
       setKonami('');
     }
-    return () => window.removeEventListener('keydown', keyDown);
   }, [konami]);
 
-  // 滚动火箭
+  // 滚动到底部触发火箭
   useEffect(() => {
     const scroll = () => {
       if (window.scrollY + window.innerHeight > document.body.scrollHeight - 100) setRocket(true);
@@ -86,32 +83,42 @@ export default function Home() {
     return () => window.removeEventListener('scroll', scroll);
   }, []);
 
-  // 加载
+  // 加载动画
   useEffect(() => {
     setTimeout(() => setLoading(false), 1500);
   }, []);
 
-  // 秘密按钮
+  // 秘密按钮悬停计数
   const handleSecretHover = () => {
     setHoverCount(c => c + 1);
-    if (hoverCount >= 4) setShowSecretBtn(true);
+    if (hoverCount + 1 >= 5) setShowSecretBtn(true);
   };
 
-  // 音乐
+  // 音乐控制
   const toggleMusic = () => {
     if (!bgmRef.current) return;
-    isMusicPlay ? bgmRef.current.pause() : bgmRef.current.play();
+    if (isMusicPlay) {
+      bgmRef.current.pause();
+    } else {
+      bgmRef.current.play();
+    }
     setIsMusicPlay(!isMusicPlay);
   };
 
-  // 右键菜单
+  // 自定义右键菜单
   useEffect(() => {
-    const handleContext = (e) => {
+    const handleContext = (e: MouseEvent) => {
       e.preventDefault();
       setContextPos({ x: e.clientX, y: e.clientY });
-      contextRef.current.classList.remove('hidden');
+      if (contextRef.current) {
+        contextRef.current.classList.remove('hidden');
+      }
     };
-    const close = () => contextRef.current?.classList.add('hidden');
+    const close = () => {
+      if (contextRef.current) {
+        contextRef.current.classList.add('hidden');
+      }
+    };
     window.addEventListener('contextmenu', handleContext);
     window.addEventListener('click', close);
     window.addEventListener('scroll', close);
@@ -135,9 +142,10 @@ export default function Home() {
 
   return (
     <main className={`min-h-screen ${dark ? 'dark bg-slate-900 text-white' : 'bg-gray-50 text-dark'}`}>
+      {/* 背景音乐 - 已闭合 */}
       <audio ref={bgmRef} loop>
         <source src="https://cdn.freesound.org/previews/640/640251_1299461-lq.mp3" type="audio/mpeg" />
-      
+      </audio>
 
       {/* 右键菜单 */}
       <div ref={contextRef} className="custom-context-menu hidden"
@@ -212,7 +220,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 秘密按钮 */}
+        {/* 秘密按钮触发区 */}
         <div onMouseEnter={handleSecretHover} className="w-1 h-1 mx-auto" />
         <AnimatePresence>
           {showSecretBtn && (
@@ -225,7 +233,7 @@ export default function Home() {
         </AnimatePresence>
       </div>
 
-      {/* 火箭 */}
+      {/* 火箭动画 */}
       <AnimatePresence>
         {rocket && (
           <motion.div initial={{ x:0 }} animate={{ x:1000 }} transition={{ duration:2 }}
