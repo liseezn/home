@@ -1,17 +1,17 @@
 import './globals.css';
+import { Inter } from 'next/font/google';
+
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'liseezn主页',
-  description: 'liseezn.top 个人主页 | 我的世界服务器 | 工具导航',
+  title: 'liseezn.top',
+  description: '炫酷个人主页',
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="zh-CN" suppressHydrationWarning>
-      <body className="antialiased">
-        {children}
-      </body>
+    <html lang="zh-CN">
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }
-
