@@ -1,5 +1,4 @@
 
-```markdown
 <div align="center">
   <img src="https://via.placeholder.com/120x120/000000/FFFFFF?text=L" alt="liseezn logo" width="80" />
   <h1>liseezn · 数字花园</h1>
