@@ -185,7 +185,7 @@ export default function Home() {
       }
     };
     window.addEventListener('click', click);
-    return () -> window.removeEventListener('click', click);
+    return () => window.removeEventListener('click', click);
   }, [addParticle]);
 
   // Konami
