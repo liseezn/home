@@ -43,7 +43,6 @@ a {
   text-decoration: none;
 }
 
-/* 滚动条 */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -56,7 +55,6 @@ a {
   border-radius: 3px;
 }
 
-/* 基础组件 */
 .sidebar-icon {
   @apply w-12 h-12 flex items-center justify-center rounded-xl text-[var(--text-secondary)] hover:bg-[var(--hover)] hover:text-[var(--text)] transition-all duration-200 cursor-pointer;
 }
@@ -71,7 +69,6 @@ a {
   @apply bg-[var(--hover)] -translate-y-0.5;
 }
 
-/* 粒子 */
 .particle {
   position: fixed;
   pointer-events: none;
@@ -89,7 +86,6 @@ a {
   100% { opacity: 0; transform: translateY(-80px) scale(0.3); }
 }
 
-/* 火箭 */
 .rocket {
   position: fixed;
   bottom: 24px;
@@ -101,7 +97,6 @@ a {
   filter: grayscale(1);
 }
 
-/* 自定义右键菜单 */
 .context-menu {
   position: fixed;
   background: var(--card);
@@ -116,12 +111,10 @@ a {
   @apply px-4 py-2 text-sm hover:bg-[var(--hover)] cursor-pointer transition-colors;
 }
 
-/* 加载屏 */
 .loading-screen {
   @apply fixed inset-0 z-[9999] bg-[var(--bg)] flex items-center justify-center;
 }
 
-/* 打字机光标 */
 .typing-cursor {
   display: inline-block;
   width: 2px;
@@ -133,4 +126,4 @@ a {
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
-}
+  }
