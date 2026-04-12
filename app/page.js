@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import {
   User, Hammer, Wrench, Package, Github, Video, Mail,
   Sun, Moon, ChevronRight, Clock, Terminal, HelpCircle
@@ -397,7 +397,7 @@ export default function Home() {
     );
   };
 
-  const RightPanel = () => (
+const RightPanel = () => (
     <div className="w-[240px] pl-6 border-l border-[var(--border)] hidden lg:block">
       <div className="sticky top-8 space-y-8">
         <div>
@@ -444,9 +444,9 @@ export default function Home() {
         </div>
       </div>
     </div>
-  );
+);
 
-  const TerminalPanel = () => (
+const TerminalPanel = () => (
     <AnimatePresence>
       {terminalOpen && (
         <motion.div initial={{ y: 100 }} animate={{ y:0 }} exit={{ y:100 }}
@@ -494,7 +494,8 @@ export default function Home() {
         </motion.div>
       )}
     </AnimatePresence>
-  );
+);
+
 
   if (loading) {
     return (
