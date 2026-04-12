@@ -1,17 +1,6 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: [
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-  ],
-  theme: {
-    extend: {
-      colors: {
-        border: 'var(--border)',
-        card: 'var(--card)',
-        'text-secondary': 'var(--text-secondary)',
-      },
-    },
-  },
-  plugins: [],
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // 默认配置即可，无需额外内容
 };
+
+module.exports = nextConfig;
