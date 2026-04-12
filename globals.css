@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+  }
+  .nav-item {
+    @apply flex items-center gap-2 p-3 rounded-lg card-hover hover:bg-primary/10 cursor-pointer;
+  }
+  .particle {
+    @apply fixed pointer-events-none z-[9999] text-2xl animate-float opacity-100;
+  }
+  .custom-context-menu {
+    @apply fixed hidden bg-white dark:bg-slate-800 shadow-xl rounded-lg py-2 min-w-[180px] z-[1000] animate-fadeIn;
+  }
+  .sleep-tip {
+    @apply fixed top-0 left-0 w-full bg-primary text-white text-center py-2 text-sm z-50;
+  }
+  .drag-item {
+    @apply cursor-grab active:cursor-grabbing;
+  }
+}
+
+@keyframes float {
+  to {
+    transform: translateY(-20px) scale(0.5);
+    opacity: 0;
+  }
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes shake {
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  100% { transform: translate(-1px, -2px) rotate(-1deg); }
+}
+.egg-shake {
+  animation: shake 0.2s infinite;
+}
+.egg-neon {
+  text-shadow: 0 0 5px #fff, 0 0 10px #165DFF, 0 0 15px #165DFF;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  cursor: default;
+}
+body {
+  transition: background 0.8s ease, color 0.8s ease;
+  overflow-x: hidden;
+}
