@@ -1,5 +1,6 @@
 import './globals.css';
 import { Inter, Playfair_Display } from 'next/font/google';
+import Script from 'next/script';  // 必须导入
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair' });
@@ -13,8 +14,8 @@ export default function RootLayout({ children }) {
   return (
     <html lang="zh-CN" className={`${inter.variable} ${playfair.variable}`}>
       <body>
-      {children}
-      <Script
+        {children}
+        <Script
           id="matomo-analytics"
           strategy="afterInteractive"
         >
