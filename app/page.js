@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Script from 'next/script';
 import {
   User, Hammer, Wrench, Package, Github, Video, Mail,
   Sun, Moon, ChevronRight, Clock, Terminal, HelpCircle
@@ -64,7 +65,7 @@ const TECH_STACK = [
     category: '后端',
     items: [
       'PHP', 'Node.js', 'Python', 'MySQL', 'MongoDB', 'Redis',
-      'Nginx', 'Apache', 
+      'Nginx', 'Apache',
       'Docker', 'Docker Compose', 'Vercel', 'Zeabur',
       'WordPress', 'Typecho', 'RESTful API'
     ]
@@ -241,9 +242,12 @@ export default function Home() {
     };
   }, []);
 
-  // 键盘导航
+  // 键盘导航（修复：忽略输入框内的按键）
   useEffect(() => {
     const keydown = (e) => {
+      const tag = document.activeElement?.tagName?.toLowerCase();
+      if (tag === 'input' || tag === 'textarea') return; // 不干扰输入框
+
       if (e.key === 'g' || e.key === 'G') {
         setGameMode(prev => !prev);
         if (!gameMode) setTerminalOutput(['🎮 游戏模式启动！', '使用 J/K 导航，Enter 打开']);
@@ -262,6 +266,9 @@ export default function Home() {
       }
       if (e.key === 't' || e.key === 'T') {
         setTerminalOpen(prev => !prev);
+      }
+      if (e.key === 'Escape') {
+        setTerminalOpen(false);
       }
       if (e.key === 's' || e.key === 'S') {
         if (activeCategory === 'blog' && wpPosts.length) {
@@ -496,7 +503,7 @@ export default function Home() {
     <AnimatePresence>
       {terminalOpen && (
         <motion.div initial={{ y: 100 }} animate={{ y:0 }} exit={{ y:100 }}
-          className="fixed bottom-0 left-0 right-0 lg:left-20 lg:right-60 bg-[var(--card)] border-t border-[var(--border)] p-4 z-40 font-mono text-sm"
+          className="fixed bottom-0 left-0 right-0 lg:left-20 lg:right-60 bg-[var(--card)] border-t border-[var(--border)] p-4 z-50 font-mono text-sm"
         >
           <div className="max-w-4xl mx-auto">
             <div className="flex items-center gap-2 mb-2">
