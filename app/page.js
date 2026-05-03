@@ -1,7 +1,6 @@
 'use client';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Script from 'next/script';
 import {
   User, Hammer, Wrench, Package, Github, Video, Mail,
   Sun, Moon, ChevronRight, Clock, Terminal, HelpCircle
@@ -111,6 +110,29 @@ export default function Home() {
 
   const mainRef = useRef(null);
   const logoClickCount = useRef(0);
+
+  // --- 主题初始化 & 应用 & 持久化 ---
+  useEffect(() => {
+    const stored = localStorage.getItem('theme');
+    if (stored) setTheme(stored);
+  }, []);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    root.classList.remove('light', 'dark');
+    if (theme === 'auto') {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      root.classList.add(prefersDark ? 'dark' : 'light');
+    } else {
+      root.classList.add(theme);
+    }
+    if (theme !== 'auto') {
+      localStorage.setItem('theme', theme);
+    } else {
+      localStorage.removeItem('theme');
+    }
+  }, [theme]);
+  // --- 结束 ---
 
   // 时间更新
   useEffect(() => {
@@ -477,6 +499,7 @@ export default function Home() {
             placeholder="输入 secret"
             value={secretInput}
             onChange={(e) => setSecretInput(e.target.value)}
+            onKeyDown={(e) => e.stopPropagation()}   // 🔒 阻止冒泡，防止触发全局快捷键
             className="w-full px-4 py-2 rounded-full border border-[var(--border)] bg-[var(--card)] text-sm focus:outline-none focus:ring-1 focus:ring-[var(--text-secondary)] transition"
           />
           {secretInput === 'secret' && (
@@ -522,6 +545,7 @@ export default function Home() {
                 value={terminalCmd}
                 onChange={(e) => setTerminalCmd(e.target.value)}
                 onKeyDown={(e) => {
+                  e.stopPropagation();                 // 🔒 阻止冒泡
                   if (e.key === 'Enter') {
                     if (terminalCmd === 'help') {
                       setTerminalOutput([...terminalOutput, '> help', '可用命令: help, clear, about, easteregg']);
