@@ -1,5 +1,5 @@
 const WORDPRESS_API = "https://blog.liseezn.top/wp-json/wp/v2/posts?per_page=12&_embed";
-function stripHtml(value = "") { return value.replace(/<[^>]*>/g, " ").replace(/\\s+/g, " ").trim(); }
+function stripHtml(value = "") { return value.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim(); }
 export async function GET() {
   try {
     const response = await fetch(WORDPRESS_API, { headers: { Accept: "application/json" }, next: { revalidate: 300 }, signal: AbortSignal.timeout(8000) });
