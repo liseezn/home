@@ -1,39 +1,15 @@
-import './globals.css';
-import { Inter, Playfair_Display } from 'next/font/google';
-import Script from 'next/script';  // 必须导入
-
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
-const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair' });
-
+import "./globals.css";
+import { Inter, Playfair_Display } from "next/font/google";
+import Analytics from "./components/analytics";
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
+const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair", display: "swap" });
 export const metadata = {
-  title: 'liseezn · 主页',
-  description: '极简黑白灰个人主页，藏有二十个交互彩蛋',
+  metadataBase: new URL("https://www.liseezn.top"),
+  title: { default: "liseezn · 数字花园", template: "%s · liseezn" },
+  description: "个人数字门户，汇集正在构建的项目、常用服务与最新文章。", applicationName: "liseezn",
+  alternates: { canonical: "/" },
+  openGraph: { type: "website", locale: "zh_CN", url: "https://www.liseezn.top", siteName: "liseezn · 数字花园", title: "liseezn · 数字花园", description: "把想法，变成正在发生的事。" },
+  twitter: { card: "summary", title: "liseezn · 数字花园", description: "把想法，变成正在发生的事。" },
+  other: { "baidu-site-verification": "codeva-pFSTct68ix" },
 };
-
-export default function RootLayout({ children }) {
-  return (
-    <html lang="zh-CN" className={`${inter.variable} ${playfair.variable}`}>
-      <body>
-        <meta name="baidu-site-verification" content="codeva-pFSTct68ix" />
-        {children}
-        <Script
-          id="matomo-analytics"
-          strategy="afterInteractive"
-        >
-          {`
-            var _paq = window._paq = window._paq || [];
-            _paq.push(['trackPageView']);
-            _paq.push(['enableLinkTracking']);
-            (function() {
-              var u="//stats.liseezn.top/";
-              _paq.push(['setTrackerUrl', u+'matomo.php']);
-              _paq.push(['setSiteId', '1']);
-              var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-              g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
-            })();
-          `}
-        </Script>
-      </body>
-    </html>
-  );
-}
+export default function RootLayout({ children }) { return <html lang="zh-CN" className={inter.variable + " " + playfair.variable} suppressHydrationWarning><body>{children}<Analytics /></body></html>; }
