@@ -640,6 +640,10 @@ export default function Home() {
         <footer className="mt-16 pt-8 border-t border-[var(--border)] text-center text-xs text-[var(--text-secondary)]">
           <p>© 2024–2026 liseezn.top · 萌ICP备20258868号 · 萌ICP备20266626号</p>
           <p className="mt-1 opacity-50">Built with curiosity · 内置 20 个交互彩蛋</p>
+          <nav aria-label="法律信息" className="mt-4 flex justify-center gap-5">
+            <a href="/privacy" className="hover:text-[var(--text)] hover:underline underline-offset-4">隐私政策</a>
+            <a href="/terms" className="hover:text-[var(--text)] hover:underline underline-offset-4">服务条款</a>
+          </nav>
         </footer>
       </div>
 
